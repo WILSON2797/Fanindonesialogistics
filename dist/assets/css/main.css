@@ -296,8 +296,8 @@ ul {
   align-items: center;
   /* CSS Variable for dynamic background from backend */
   --hero-bg: url('../img/hero-bg.png');
-  /* Premium Dark Overlay with Gradient */
-  background: linear-gradient(135deg, rgba(6, 17, 34, 0.85) 0%, rgba(10, 26, 51, 0.45) 50%, rgba(6, 17, 34, 0.75) 100%),
+  /* Premium Dark Overlay with Gradient (Reduced Opacity) */
+  background: linear-gradient(135deg, rgba(6, 17, 34, 0.65) 0%, rgba(10, 26, 51, 0.25) 50%, rgba(6, 17, 34, 0.55) 100%),
     var(--hero-bg);
   background-size: cover;
   background-position: center;
@@ -602,14 +602,15 @@ ul {
 }
 
 .hero-fpill {
-  background: rgba(0, 180, 216, .15);
-  color: var(--accent);
+  background: rgba(0, 180, 216, .25);
+  color: #ffffff;
   font-size: .72rem;
-  font-weight: 600;
+  font-weight: 700;
   padding: 5px 14px;
   border-radius: 50px;
-  border: 1px solid rgba(0, 180, 216, .25);
+  border: 1px solid rgba(0, 180, 216, .6);
   letter-spacing: 1px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* Floating Badges */
@@ -4304,7 +4305,7 @@ textarea.form-control {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(3,27,51,0.9) 0%, rgba(3,27,51,0.5) 100%);
+  background: linear-gradient(135deg, rgba(3, 27, 51, 0.9) 0%, rgba(3, 27, 51, 0.5) 100%);
   z-index: 1;
 }
 
@@ -4426,7 +4427,8 @@ textarea.form-control {
 }
 
 .svd-content-list li::before {
-  content: '\F26A'; /* Bootstrap check circle */
+  content: '\F26A';
+  /* Bootstrap check circle */
   font-family: 'bootstrap-icons';
   position: absolute;
   left: 0;
@@ -4647,9 +4649,11 @@ textarea.form-control {
   .svd-layout-grid {
     grid-template-columns: 1fr;
   }
+
   .svd-content-section {
     margin-top: -60px;
   }
+
   .svd-hero-text h1 {
     font-size: 2.5rem;
   }
@@ -4659,6 +4663,7 @@ textarea.form-control {
   .svd-card-glass {
     padding: 40px 25px;
   }
+
   .svd-icon-float {
     left: 25px;
   }
@@ -4684,9 +4689,12 @@ textarea.form-control {
 
 .cva-hero-bg {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: radial-gradient(circle at center, rgba(10, 77, 162, 0.4) 0%, transparent 70%),
-              url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=');
+    url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=');
   z-index: 1;
 }
 
@@ -4824,7 +4832,10 @@ textarea.form-control {
 .cva-region-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 4px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
   background: var(--gradient);
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -4859,7 +4870,7 @@ textarea.form-control {
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .cva-region-name {
@@ -4867,7 +4878,7 @@ textarea.form-control {
   font-weight: 700;
   color: var(--white);
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .cva-city-list {
@@ -4898,7 +4909,13 @@ textarea.form-control {
     flex-wrap: wrap;
   }
 }
+
 @media (max-width: 767px) {
-  .cva-hero h1 { font-size: 2.5rem; }
-  .cva-grid { grid-template-columns: 1fr; }
+  .cva-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .cva-grid {
+    grid-template-columns: 1fr;
+  }
 }
