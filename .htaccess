@@ -3,20 +3,27 @@
   
   # Sitemap Otomatis
   RewriteRule ^sitemap\.xml$ sitemap-gen.php [L]
-  
-  # Jangan ganggu folder/file asli yang ada di root (seperti api/, uploads/, sitemap-gen.php, dll.)
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
+
+  # 1. Biarkan request ke file fisik yang memang ada (misal gambar di uploads/)
+  RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^ - [L]
 
-  # Arahkan semua request halaman admin (misal /admin atau /admin/dashboard) ke dist/admin/index.html
+  # 2. Rute Khusus API: Arahkan semua request /api/* ke api/index.php
+  RewriteCond %{REQUEST_URI} ^/api/
+  RewriteRule ^api/(.*)$ api/index.php [L]
+
+  # 3. Biarkan request ke folder subdomain (misal financeapps) berjalan normal
+  RewriteCond %{REQUEST_URI} ^/financeapps/
+  RewriteRule ^ - [L]
+
+  # 4. Arahkan semua request halaman admin ke dist/admin/index.html
   RewriteRule ^admin(/.*)?$ dist/admin/index.html [L]
 
-  # Arahkan request aset statis atau file yang dicari di dalam folder dist/
-  RewriteCond %{DOCUMENT_ROOT}/$1 -f
+  # 5. Cek apakah file aset yang dicari ada di dalam folder dist/
+  RewriteCond %{DOCUMENT_ROOT}/dist/$1 -f
   RewriteRule ^(.*)$ dist/$1 [L]
 
-  # Arahkan semua request halaman publik ke dist/index.html (History Mode)
+  # 6. Fallback: Arahkan SEMUA request sisanya (termasuk root "/") ke dist/index.html
   RewriteRule ^(.*)$ dist/index.html [L]
 </IfModule>
 
