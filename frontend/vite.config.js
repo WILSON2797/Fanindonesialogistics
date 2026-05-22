@@ -18,7 +18,7 @@ export default defineConfig(({ command }) => ({
       }
     }
   ],
-  base: command === 'build' ? './' : '/', // Use '/' for dev (fixes trailing slash issues), and './' for production (relative paths)
+  base: '/', // Must be absolute for History Mode routing to work on subpages like /services/14
   build: {
     outDir: '../dist',
     emptyOutDir: true,
