@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+frontend/node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vite/Vue output
+# We DO NOT ignore the root `dist/` because your backend uses it for serving the web app.
+# If you don't want to push the compiled frontend to GitHub, uncomment the line below.
+# dist/
+# frontend/dist/
+
+# Uploaded Files
+# If you don't want to push images/files uploaded via Admin to GitHub, uncomment the lines below.
+# Generated Files
+sitemap.xml
+
+# Configuration (DO NOT PUSH PASSWORDS)
+config.php

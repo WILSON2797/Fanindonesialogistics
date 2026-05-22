@@ -1,0 +1,9 @@
+# Matikan eksekusi skrip PHP di folder ini
+<Files *.php>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Cegah akses ke file konfigurasi atau skrip lainnya
+Options -Indexes
+php_flag engine off
