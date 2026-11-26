@@ -1,9 +1,9 @@
 <template>
   <div>
-    <section class="page-banner">
+    <section class="page-banner" v-if="!hideBanner">
       <div class="container">
-        <h1 data-aos="fade-up">Certificates</h1>
-        <p data-aos="fade-up" data-aos-delay="100">Our official legality and certifications</p>
+        <h1 data-aos="fade-up">Certificates &amp; Legality</h1>
+        <p data-aos="fade-up" data-aos-delay="100">Our official operational licenses, legality, and quality certifications</p>
       </div>
     </section>
 
@@ -89,6 +89,12 @@ import { api } from '../api.js';
 
 export default {
   name: 'Certificates',
+  props: {
+    hideBanner: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       certificates: [],

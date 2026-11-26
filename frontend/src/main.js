@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
+import '../public/assets/css/main.css';
 
 // Fix trailing slash BEFORE Vue/Router initializes
 // Vite dev server redirects /about → /about/ (HTTP redirect) due to cached 'base' or old behavior

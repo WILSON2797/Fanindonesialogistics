@@ -2,12 +2,11 @@
   <div>
     <!-- HERO -->
     <section class="hero" :style="heroStyle">
-      <div class="hero-particles" ref="particles"></div>
       <div class="container">
         <div class="hero-grid">
           <div class="hero-content" data-aos="fade-right">
             <div class="hero-badge-pill">
-              <span class="hero-badge-dot"></span> TRUSTED LOGISTICS PARTNER
+              <span class="hero-badge-dot"></span> TRUSTED LOGISTICS &amp; INFRASTRUCTURE PARTNER
             </div>
             <h1 v-if="hero">{{ hero.title }}
               <span class="hero-sub-text">{{ typewriterText }}<span class="typewriter-cursor"></span></span>
@@ -16,8 +15,7 @@
               <span class="hero-sub-text">{{ typewriterText }}<span class="typewriter-cursor"></span></span>
             </h1>
             <p v-if="hero">{{ hero.subtitle }}</p>
-            <p v-else>Trusted transportation and distribution services for all regions of Indonesia. Modern fleet,
-              integrated systems, and professional team.</p>
+            <p v-else>Trusted transportation, warehousing, distribution, and telecommunication infrastructure services across all regions of Indonesia.</p>
             <div class="hero-btns">
               <router-link to="/quote" class="hero-btn-primary"><i class="fa-solid fa-paper-plane"></i> Request
                 Quote</router-link>
@@ -45,33 +43,39 @@
               </div>
             </div>
           </div>
-          <div class="hero-visual" data-aos="fade-left" data-aos-delay="200">
-            <div class="hero-truck-card">
-              <div class="hero-truck-icon">
-                <i class="bi bi-truck"></i>
+          <div class="hero-visual" data-aos="fade-left" data-aos-delay="150">
+            <div class="hero-enterprise-panel">
+              <div class="hero-ep-header">
+                <span class="hero-ep-kicker">OPERATIONAL READINESS</span>
+                <span class="hero-ep-status"><span class="hero-ep-dot"></span> 24/7 ACTIVE</span>
               </div>
-              <div class="hero-truck-label">{{ heroVisual.card_title }}</div>
-              <div class="hero-truck-sub">{{ heroVisual.card_subtitle }}</div>
+              <div class="hero-ep-main">
+                <div class="hero-ep-icon">
+                  <i class="bi bi-truck"></i>
+                </div>
+                <div>
+                  <div class="hero-truck-label">{{ heroVisual.card_title }}</div>
+                  <div class="hero-truck-sub">{{ heroVisual.card_subtitle }}</div>
+                </div>
+              </div>
               <div class="hero-fleet-pills" v-if="heroVisual.card_pills">
                 <span class="hero-fpill" v-for="(pill, idx) in heroVisual.card_pills.split(',')" :key="idx">{{ pill.trim() }}</span>
               </div>
-            </div>
-            <div class="hero-floating-badge hero-fb-top">
-              <div class="hero-fb-icon hero-fb-green">
-                <i class="fa-solid fa-circle-check hero-fb-green-icon"></i>
-              </div>
-              <div>
-                <div class="hero-fb-t1">{{ heroVisual.badge1_title }}</div>
-                <div class="hero-fb-t2">{{ heroVisual.badge1_subtitle }}</div>
-              </div>
-            </div>
-            <div class="hero-floating-badge hero-fb-bot">
-              <div class="hero-fb-icon hero-fb-blue">
-                <i class="fa-solid fa-satellite-dish hero-fb-blue-icon"></i>
-              </div>
-              <div>
-                <div class="hero-fb-t1">{{ heroVisual.badge2_title }}</div>
-                <div class="hero-fb-t2">{{ heroVisual.badge2_subtitle }}</div>
+              <div class="hero-ep-metrics">
+                <div class="hero-ep-metric">
+                  <i class="bi bi-check2-circle"></i>
+                  <div>
+                    <div class="hero-fb-t1">{{ heroVisual.badge1_title }}</div>
+                    <div class="hero-fb-t2">{{ heroVisual.badge1_subtitle }}</div>
+                  </div>
+                </div>
+                <div class="hero-ep-metric">
+                  <i class="bi bi-broadcast"></i>
+                  <div>
+                    <div class="hero-fb-t1">{{ heroVisual.badge2_title }}</div>
+                    <div class="hero-fb-t2">{{ heroVisual.badge2_subtitle }}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

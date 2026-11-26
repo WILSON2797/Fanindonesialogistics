@@ -20,7 +20,7 @@
             </thead>
             <tbody>
               <tr v-for="s in servicesList" :key="s.id">
-                <td><i :class="'fa-solid ' + s.icon" class="table-service-icon"></i></td>
+                <td><i :class="getIconClass(s.icon)" class="table-service-icon"></i></td>
                 <td><strong>{{ s.title }}</strong></td>
                 <td class="table-desc-col">{{ (s.description || '').substring(0, 80) }}...</td>
                 <td>
@@ -49,8 +49,8 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>Icon (Font Awesome class)</label>
-            <input class="form-control" v-model="modal.data.icon" placeholder="fa-truck" />
+            <label>Icon (Bootstrap Icons `bi-*` atau Font Awesome `fa-*`)</label>
+            <input class="form-control" v-model="modal.data.icon" placeholder="bi-broadcast atau fa-tower-cell" />
           </div>
           <div class="form-group">
             <label><i class="fa-solid fa-image form-icon-pad"></i> Gambar Layanan</label>
@@ -125,6 +125,16 @@ export default {
     await this.fetchServices();
   },
   methods: {
+    getIconClass(icon) {
+      if (!icon) return 'bi bi-box-seam';
+      const clean = icon.trim();
+      if (clean.startsWith('fa-solid') || clean.startsWith('fa-regular') || clean.startsWith('fa-brands')) {
+        return clean;
+      }
+      if (clean.startsWith('fa-')) return 'fa-solid ' + clean;
+      if (clean.startsWith('bi-')) return 'bi ' + clean;
+      return clean;
+    },
     async fetchServices() {
       try {
         const r = await api.getServices();

@@ -1,69 +1,137 @@
 <template>
-  <div class="warehouse-page">
+  <div class="warehouse-page" :class="{ 'wh-is-page': !hideBanner }">
+    <!-- STANDALONE PAGE BANNER -->
     <section class="page-banner" v-if="!hideBanner">
       <div class="container">
-        <h1 data-aos="fade-up">Our Warehouse</h1>
-        <p data-aos="fade-up" data-aos-delay="100">Modern warehousing solutions across Indonesia, tailored for your logistics needs.</p>
+        <div class="ent-banner-inner" data-aos="fade-up">
+          <div class="ent-breadcrumb">
+            <router-link to="/">Home</router-link>
+            <span>/</span>
+            <span>Our Warehouse</span>
+          </div>
+          <h1>Strategic Warehouse &amp; DOP Facilities</h1>
+          <p>
+            Modern warehousing, Distribution Point (DOP) hubs, and WMS-integrated storage infrastructure across key Indonesian corridors.
+          </p>
+        </div>
       </div>
     </section>
 
-    <section class="warehouse-showcase">
+    <!-- WAREHOUSE CATALOG SECTION -->
+    <section class="wh-section">
       <div class="container">
-        <div class="sec-header-center" data-aos="fade-up" style="text-align: center; max-width: 700px; margin: 0 auto;">
-          <span class="sec-label">Our Warehouse</span>
-          <h2 class="sec-title">Strategic <span>Warehouse</span> Locations</h2>
-          <p class="sec-desc">Our warehouses are strategically located to ensure efficient storage and distribution across regions.</p>
-        </div>
+        <!-- Editorial Header + Region Filter Tabs -->
+        <div class="wh-top-hdr" data-aos="fade-up">
+          <div class="wh-title-col">
+            <span class="wh-kicker-mono">04 // STORAGE &amp; DOP INFRASTRUCTURE</span>
+            <h2 class="wh-heading">Strategic Warehouse Locations</h2>
+          </div>
 
-        <div class="warehouse-grid">
-          <div
-            class="warehouse-card"
-            v-for="(w, i) in warehouses"
-            :key="w.id"
-            data-aos="fade-up"
-            :data-aos-delay="i * 100"
-          >
-            <div class="warehouse-img-wrapper">
-              <img :src="getWarehouseImage(w)" :alt="w.name" class="warehouse-img">
-              <div class="warehouse-overlay">
-                <div class="warehouse-badge">{{ w.type || 'General' }}</div>
-              </div>
-            </div>
-            <div class="warehouse-info">
-              <h3 class="warehouse-name">{{ w.name }}</h3>
-
-              <div class="warehouse-specs">
-                <div class="w-spec-item" v-if="w.area">
-                  <i class="bi bi-arrows-fullscreen"></i>
-                  <span><strong>Area:</strong> {{ w.area }}</span>
-                </div>
-                <div class="w-spec-item" v-if="w.type">
-                  <i class="bi bi-building"></i>
-                  <span><strong>Type:</strong> {{ w.type }}</span>
-                </div>
-                <div class="w-spec-item" v-if="w.region">
-                  <i class="bi bi-geo-alt-fill"></i>
-                  <span><strong>Region:</strong> {{ w.region }}</span>
-                </div>
-                <div class="w-spec-item" v-if="w.project">
-                  <i class="bi bi-briefcase-fill"></i>
-                  <span><strong>Project:</strong> {{ w.project }}</span>
-                </div>
-              </div>
-
-              <p class="warehouse-desc" v-if="w.description">{{ w.description }}</p>
-
-              <div class="warehouse-footer">
-                <router-link :to="'/warehouse/' + w.id" class="btn-detail">
-                  View Details <i class="bi bi-arrow-right"></i>
-                </router-link>
-                <span class="warehouse-status"><span class="status-dot"></span> Active</span>
-              </div>
-            </div>
+          <!-- Region Filter Bar -->
+          <div class="svc-filter-bar" v-if="warehouses.length > 0">
+            <button
+              v-for="tab in regionTabs"
+              :key="tab.key"
+              type="button"
+              class="svc-filter-tab"
+              :class="{ active: activeRegion === tab.key }"
+              @click="activeRegion = tab.key"
+            >
+              <span>{{ tab.label }}</span>
+              <span class="svc-filter-count">{{ tab.count }}</span>
+            </button>
           </div>
         </div>
 
-        <div v-if="warehouses.length === 0 && !loading" class="warehouse-empty" data-aos="fade-up">
+        <!-- Warehouse Metrics Strip -->
+        <div class="wh-summary-strip" v-if="warehouses.length > 0" data-aos="fade-up" data-aos-delay="40">
+          <div class="wh-sstat">
+            <span class="wh-sstat-val">{{ warehouses.length }}</span>
+            <span class="wh-sstat-lbl">Active Facilities</span>
+          </div>
+          <div class="wh-sstat">
+            <span class="wh-sstat-val">{{ totalAreaFormatted }}</span>
+            <span class="wh-sstat-lbl">Combined Storage Space</span>
+          </div>
+          <div class="wh-sstat">
+            <span class="wh-sstat-val">24/7</span>
+            <span class="wh-sstat-lbl">CCTV &amp; Security SOP</span>
+          </div>
+          <div class="wh-sstat">
+            <span class="wh-sstat-val">WMS</span>
+            <span class="wh-sstat-lbl">Real-Time Stock System</span>
+          </div>
+        </div>
+
+        <!-- Uniform Modern Warehouse Card Grid -->
+        <div class="wh-modern-grid" v-if="filteredWarehouses.length > 0">
+          <router-link
+            v-for="(w, i) in filteredWarehouses"
+            :key="w.id"
+            :to="'/warehouse/' + w.id"
+            class="wh-card"
+            data-aos="fade-up"
+            :data-aos-delay="(i % 3) * 50"
+          >
+            <!-- Top Media Panel -->
+            <div class="wh-card-media">
+              <img :src="getWarehouseImage(w, i)" :alt="w.name" class="wh-card-img" loading="lazy" />
+              <div class="wh-card-badges">
+                <span class="wh-status-pill">
+                  <span class="wh-status-dot"></span> Active Hub
+                </span>
+                <span class="wh-area-pill" v-if="w.area">
+                  <i class="bi bi-arrows-fullscreen"></i> {{ formatArea(w.area) }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="wh-card-body">
+              <div class="wh-card-meta">
+                <span class="wh-meta-idx">{{ String(i + 1).padStart(2, '0') }}</span>
+                <span class="wh-meta-sep">/</span>
+                <span class="wh-meta-region">{{ formatRegion(w.region) }}</span>
+                <span class="wh-meta-icon">
+                  <i class="bi bi-building"></i>
+                </span>
+              </div>
+
+              <h3 class="wh-card-title">{{ w.name }}</h3>
+              <p class="wh-card-desc">{{ getCleanDescription(w) }}</p>
+
+              <!-- 2-Column Technical Specs Grid -->
+              <div class="wh-card-specs">
+                <div class="wh-spec-chip" v-if="w.area">
+                  <i class="bi bi-check2"></i>
+                  <span>Area: <strong>{{ formatArea(w.area) }}</strong></span>
+                </div>
+                <div class="wh-spec-chip" v-if="w.type">
+                  <i class="bi bi-check2"></i>
+                  <span>Type: <strong>{{ w.type }} Facility</strong></span>
+                </div>
+                <div class="wh-spec-chip" v-if="w.project">
+                  <i class="bi bi-check2"></i>
+                  <span>Project: <strong>{{ w.project }}</strong></span>
+                </div>
+                <div class="wh-spec-chip" v-if="w.region">
+                  <i class="bi bi-check2"></i>
+                  <span>{{ formatRegion(w.region) }}</span>
+                </div>
+              </div>
+
+              <div class="wh-card-cta">
+                <span>Inspect Facility Dossier</span>
+                <span class="wh-card-arrow">
+                  <i class="bi bi-arrow-up-right"></i>
+                </span>
+              </div>
+            </div>
+          </router-link>
+        </div>
+
+        <!-- Empty State -->
+        <div v-if="warehouses.length === 0 && !loading" class="svc-empty-box" data-aos="fade-up">
           <i class="bi bi-building"></i>
           <p>Warehouse data is being updated. Please check back soon.</p>
         </div>
@@ -86,8 +154,41 @@ export default {
   data() {
     return {
       warehouses: [],
-      loading: true
+      loading: true,
+      activeRegion: 'all'
     };
+  },
+  computed: {
+    regionTabs() {
+      const counts = {
+        all: this.warehouses.length,
+        kalimantan: 0,
+        sumatera: 0,
+        jawa: 0
+      };
+      this.warehouses.forEach(w => {
+        const g = this.getRegionGroup(w.region);
+        if (counts[g] !== undefined) counts[g]++;
+      });
+      return [
+        { key: 'all', label: 'All Facilities', count: counts.all },
+        { key: 'kalimantan', label: 'Kalimantan', count: counts.kalimantan },
+        { key: 'sumatera', label: 'Sumatera', count: counts.sumatera },
+        { key: 'jawa', label: 'Jawa & Others', count: counts.jawa }
+      ].filter(t => t.key === 'all' || t.count > 0);
+    },
+    filteredWarehouses() {
+      if (this.activeRegion === 'all') return this.warehouses;
+      return this.warehouses.filter(w => this.getRegionGroup(w.region) === this.activeRegion);
+    },
+    totalAreaFormatted() {
+      let sum = 0;
+      this.warehouses.forEach(w => {
+        const num = parseFloat(String(w.area || '0').replace(/[^\d.]/g, ''));
+        if (!isNaN(num)) sum += num;
+      });
+      return sum > 0 ? `${sum.toLocaleString('id-ID')} m²` : '3,500+ m²';
+    }
   },
   async mounted() {
     try {
@@ -102,190 +203,47 @@ export default {
     });
   },
   methods: {
-    getWarehouseImage(w) {
-      if (!w) return '';
-      if (w.image_path) {
-        const base = window.BASE_DIR || '';
-        return base + '/' + w.image_path;
+    getRegionGroup(region) {
+      const r = (region || '').toLowerCase();
+      if (r.includes('kalimantan')) return 'kalimantan';
+      if (r.includes('sumatera') || r.includes('sumatra')) return 'sumatera';
+      return 'jawa';
+    },
+    formatRegion(region) {
+      if (!region) return 'INDONESIA';
+      return region.replace(/NORT\s+/i, 'NORTH ').toUpperCase();
+    },
+    formatArea(area) {
+      if (!area) return 'Standard';
+      const str = String(area).trim();
+      if (/^\d+(\.\d+)?$/.test(str)) {
+        return `${str} m²`;
       }
-      return '';
+      return str;
+    },
+    getCleanDescription(w) {
+      const desc = (w.description || '').trim();
+      if (!desc || desc.length <= 28) {
+        const proj = w.project ? `Project ${w.project}` : 'enterprise supply chain';
+        const reg = this.formatRegion(w.region);
+        return `Fasilitas ${w.type || 'Gudang'} terstandarisasi seluas ${this.formatArea(w.area)} di wilayah ${reg} untuk mendukung penyimpanan, manajemen inventori WMS, dan distribusi ${proj}.`;
+      }
+      return desc;
+    },
+    getWarehouseImage(w, idx = 0) {
+      const base = this.$baseDir || window.BASE_DIR || '';
+      if (w && w.image_path && w.image_path.trim() !== '') {
+        return base + '/' + w.image_path.replace(/^\/+/, '');
+      }
+      const fallbacks = [
+        'uploads/warehouse/81f679467ba0c3699544.jpeg',
+        'uploads/services/69ef1c7dded60_1777278077.jpg',
+        'uploads/services/feed12b0996405f98ac0.jpg',
+        'uploads/services/c1de306c13a31ad9a501.jpg',
+        'uploads/warehouse-gallery/75fea2f4c8ba098ab606.jpeg'
+      ];
+      return base + '/' + fallbacks[idx % fallbacks.length];
     }
   }
 };
 </script>
-
-<style scoped>
-.warehouse-showcase {
-  padding-bottom: 100px;
-}
-
-.warehouse-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 28px;
-  margin-top: 50px;
-}
-
-.warehouse-card {
-  background: var(--card-bg, #fff);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  transition: transform 0.35s cubic-bezier(.4,0,.2,1), box-shadow 0.35s ease;
-  border: 1px solid var(--border, rgba(0,0,0,0.06));
-}
-
-.warehouse-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.13);
-}
-
-.warehouse-img-wrapper {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  background: #0f172a;
-}
-
-.warehouse-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.warehouse-card:hover .warehouse-img {
-  transform: scale(1.06);
-}
-
-.warehouse-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5) 100%);
-  display: flex;
-  align-items: flex-end;
-  padding: 16px;
-}
-
-.warehouse-badge {
-  background: var(--primary, #2563eb);
-  color: #fff;
-  padding: 4px 14px;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.warehouse-info {
-  padding: 18px 20px 18px;
-}
-
-.warehouse-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--heading, #0f172a);
-  margin: 0 0 14px;
-}
-
-.warehouse-specs {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.w-spec-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-  color: var(--text, #334155);
-}
-
-.w-spec-item i {
-  color: var(--primary, #2563eb);
-  font-size: 0.95rem;
-  flex-shrink: 0;
-  width: 18px;
-  text-align: center;
-}
-
-.warehouse-desc {
-  font-size: 0.88rem;
-  color: var(--text-light, #64748b);
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-.warehouse-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 14px;
-  border-top: 1px solid var(--border, rgba(0,0,0,0.06));
-}
-
-.warehouse-footer .btn-detail {
-  color: var(--primary, #2563eb);
-  font-weight: 600;
-  font-size: 0.88rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  transition: gap 0.2s ease;
-}
-
-.warehouse-footer .btn-detail:hover {
-  gap: 10px;
-}
-
-.warehouse-status {
-  font-size: 0.8rem;
-  color: #16a34a;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-}
-
-.warehouse-status .status-dot {
-  width: 8px;
-  height: 8px;
-  background: #22c55e;
-  border-radius: 50%;
-  display: inline-block;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.warehouse-empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text-light, #64748b);
-}
-
-.warehouse-empty i {
-  font-size: 3rem;
-  margin-bottom: 16px;
-  opacity: 0.3;
-}
-
-@media (max-width: 768px) {
-  .warehouse-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .warehouse-img-wrapper {
-    height: 180px;
-  }
-}
-</style>

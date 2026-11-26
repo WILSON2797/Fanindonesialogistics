@@ -41,3 +41,6 @@ sitemap.xml
 
 # Configuration (DO NOT PUSH PASSWORDS)
 config.php
+
+# Database connection class (environment-specific; use api/config/database.example.php as template)
+api/config/database.php
